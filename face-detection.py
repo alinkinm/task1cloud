@@ -10,7 +10,6 @@ from requests_auth_aws_sigv4 import AWSSigV4
 from aws_requests_auth.aws_auth import AWSRequestsAuth
 
 
-# Создайте функцию, которая кодирует файл и возвращает результат.
 def encode_file(file):
     file_content = file.read()
     return base64.b64encode(file_content)
@@ -35,11 +34,11 @@ def handler(event, context):
     object = s3.get_object(Bucket=bucket_id, Key=key)
     body = object['Body']
 
-    with io.FileIO('/tmp/sample.png', 'w') as file:
+    with io.FileIO('/tmp/sample.jpg', 'w') as file:
         for b in body._raw_stream:
             file.write(b)
 
-    f = open('/tmp/sample.png', "rb")
+    f = open('/tmp/sample.jpg', "rb")
     encoded_file = encode_file(f)
 
     x = {
@@ -54,10 +53,6 @@ def handler(event, context):
     }
 
     y = json.dumps(x)
-
-    # with open("sample.json", "w") as outfile:
-    #     outfile.write(y)
-    # new_token = os.popen("yc iam create-token").read()
 
     url = 'http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token'
     headers = {'Metadata-Flavor': 'Google'}
@@ -79,8 +74,6 @@ def handler(event, context):
         return
 
     faces = faceDetection['faces']
-
-    print(faces)
 
     sqs = boto3.client('sqs', region_name='ru-central1', endpoint_url='https://message-queue.api.cloud.yandex.net/')
     queue_url = os.getenv('QUEUE_URL')
@@ -104,6 +97,3 @@ def handler(event, context):
             MessageBody=('body')
         )
         print(response)
-
-    with open("/tmp/result.json", "w") as f:
-        f.write(response['MessageId'])

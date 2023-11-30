@@ -45,7 +45,7 @@ resource "yandex_function" "vvot03-face-detection" {
   execution_timeout  = "10"
   service_account_id = yandex_iam_service_account.sa.id
   content {
-    zip_filename = "func1.zip"
+    zip_filename = "face-detection.zip"
   }
   
   environment = {
@@ -138,7 +138,7 @@ resource "yandex_function" "vvot03-face-cut" {
   execution_timeout  = "50"
   service_account_id = yandex_iam_service_account.sa.id
   content {
-    zip_filename = "func2.zip"
+    zip_filename = "face-cut.zip"
   }
   
   environment = {
@@ -146,6 +146,8 @@ resource "yandex_function" "vvot03-face-cut" {
     AWS_SECRET_ACCESS_KEY = yandex_iam_service_account_static_access_key.sa-static-key.secret_key
     AWS_DEFAULT_REGION = "ru-central1-a"
     DATABASE_URL = yandex_ydb_database_serverless.vvot03-db-photo-face.ydb_full_endpoint
+    FACE_STORAGE = var.bucket_faces
+    PHOTO_STORAGE = var.bucket_photo
   }
 }
 
@@ -238,7 +240,7 @@ resource "yandex_function" "vvot03-boot" {
   service_account_id = yandex_iam_service_account.sa.id
   tags               = ["my_tag"]
   content {
-    zip_filename = "2254.zip"
+    zip_filename = "3.zip"
   }
   environment = {
     APITG = yandex_api_gateway.vvot03-apigw.id
