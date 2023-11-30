@@ -1,0 +1,6 @@
+service_account_key_file = "key.json"
+cloud_id = "b1g71e95h51okii30p25"
+folder_id = "b1gqqiji145iks917iem"
+tgkey = "6761917445:AAFhQOcud0sTuDwgYb4lk0tXzFPvbnrq7t8"
+bucket_faces = "vvot03-faces"
+bucket_photo = "vvot03-photo"
